@@ -1,0 +1,11 @@
+A Web Crawler
+
+Currently it could crawle 2 sites:
+- http://rabota.ua
+- http://prgjobs.com
+
+It analizes content and stores records into database.
+
+Requirements:
+- VS2010
+- EF4 CodeFirst preview
