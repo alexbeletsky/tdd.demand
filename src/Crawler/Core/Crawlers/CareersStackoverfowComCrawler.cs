@@ -19,46 +19,57 @@ namespace Crawler.Core.Crawlers
         {
             Loader = loader;
             Repository = context;
+
+            StartCrawling();
         }
 
         protected override string BaseUrl
         {
-            get { throw new NotImplementedException(); }
+            get { return _baseUrl; }
         }
 
         protected override string SearchBaseUrl
         {
-            get { throw new NotImplementedException(); }
+            get { return _searchBaseUrl; }
         }
 
         protected override IEnumerable<HtmlAgilityPack.HtmlNode> GetJobRows(HtmlAgilityPack.HtmlDocument document)
         {
-            throw new NotImplementedException();
+            return document.DocumentNode.Descendants("div").Where(
+                r => r.Attributes.Contains("class") && r.Attributes["class"].Value.Contains("listitem"));
         }
 
         protected override string CreateNextUrl(int nextPage)
         {
-            throw new NotImplementedException();
+            return SearchBaseUrl + "&pg=" + nextPage;
         }
 
         protected override string GetVacancyUrl(HtmlAgilityPack.HtmlNode row)
         {
-            throw new NotImplementedException();
+            var vacancyHref = row.Descendants("a").Where(
+                r => r.Attributes.Contains("class") && r.Attributes["class"].Value.Contains("title"))
+                .Select(r => r.Attributes["href"].Value).SingleOrDefault();
+
+            return BaseUrl + vacancyHref;
         }
 
         protected override string GetVacancyBody(HtmlAgilityPack.HtmlDocument htmlDocument)
         {
-            throw new NotImplementedException();
+            var node = htmlDocument.DocumentNode.SelectSingleNode(@"//*[@id=""description""]");
+            return node.InnerText;
         }
 
         protected override string GetPosition(HtmlAgilityPack.HtmlNode row)
         {
-            throw new NotImplementedException();
+            return row.Descendants("a").Where(
+                r => r.Attributes.Contains("class") && r.Attributes["class"].Value.Contains("title"))
+                .Select(r => r.InnerText).SingleOrDefault();
         }
 
         protected override string GetCompany(HtmlAgilityPack.HtmlNode row)
         {
-            throw new NotImplementedException();
+            //could not extract company from a row, skip it, since it not used..
+            return "Company";
         }
     }
 }

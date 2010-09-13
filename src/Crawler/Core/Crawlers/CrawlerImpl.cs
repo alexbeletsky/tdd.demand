@@ -77,7 +77,7 @@ namespace Crawler.Core.Crawlers
 
                     var position = GetPosition(row);
                     var company = GetCompany(row);
-                    var technology = GetTechnology(position);
+                    var technology = GetTechnology(position, vacancyBody);
                     var demand = GetDemand(vacancyBody);
 
                     var record = new TddDemandRecord()
@@ -107,7 +107,22 @@ namespace Crawler.Core.Crawlers
             return MatchToTdd(vacancyBody);
         }
 
-        protected virtual string GetTechnology(string position)
+        protected virtual string GetTechnology(string position, string body)
+        {
+            //2 stage processing.. first we try to match key words from postion name
+            //if it is to generic, like "Software developer" try to match key words in vacancy body
+
+            var technology = MatchTechnology(position);
+
+            if (technology == "Other")
+            {
+                technology = MatchTechnology(body);
+            }
+
+            return technology;
+        }
+
+        private string MatchTechnology(string position)
         {
             var technology = string.Empty;
             if (MatchToJava(position))
@@ -126,7 +141,6 @@ namespace Crawler.Core.Crawlers
             {
                 technology = "Other";
             }
-
             return technology;
         }
 

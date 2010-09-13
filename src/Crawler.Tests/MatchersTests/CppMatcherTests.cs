@@ -63,5 +63,21 @@ namespace Crawler.Tests.MatchersTests
             Assert.That(result, Is.True);
         }
 
+        //something that I saw after crawler run.. it incorrectly matches C# postion as Cpp one
+        [Test]
+        public void PleaseDoNotMathcDoNet()
+        {
+            //arrange
+            var matcher = new CppMatcher();
+            var input = "Senior C# / .NET Developer";
+
+            //act
+            var result = matcher.Match(input);
+
+            //post
+            Assert.That(result, Is.False);
+        }
+
+
     }
 }

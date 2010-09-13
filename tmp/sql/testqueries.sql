@@ -1,10 +1,11 @@
-SELECT name
-FROM sys.databases
-SELECT name
-FROM sys.sysdatabases
+drop database crawlerdb;
 
-use crawlerdb
+select * from sys.databases;
 
-select * from sys.tables;
+use crawlerdb;
 
-select * from tdddemandrecords
+select COUNT(*) from TddDemandRecords where Site='http://careers.stackoverflow.com';
+select * from TddDemandRecords where Site='http://careers.stackoverflow.com';
+select COUNT(*) from TddDemandRecords where Site='http://careers.stackoverflow.com' and Demand='1';
+select Technology, COUNT(*) from TddDemandRecords where Site='http://careers.stackoverflow.com' and Demand='1' group by Technology;
+

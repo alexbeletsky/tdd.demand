@@ -10,7 +10,6 @@ namespace Crawler.Core.Matchers
         private static IList<string> _patterns = new List<string>()
             {
                 "c\\+\\+",
-                "c",
                 "cpp",
                 "stl",
                 "cppunit"

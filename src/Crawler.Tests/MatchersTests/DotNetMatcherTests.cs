@@ -76,5 +76,19 @@ namespace Crawler.Tests.MatchersTests
             Assert.That(result, Is.True);
         }
 
+        [Test]
+        public void OneMoreMatch()
+        {
+            //arrange
+            var matcher = new DotNetMatcher();
+            var input = "Senior C# / .NET Developer";
+
+            //act
+            var result = matcher.Match(input);
+
+            //post
+            Assert.That(result, Is.True);
+        }
+
     }
 }

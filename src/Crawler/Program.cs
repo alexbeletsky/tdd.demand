@@ -20,7 +20,8 @@ namespace Crawler
                 var loader = new HtmlDocumentLoader();
                 var repository = new CrawlerRepository();
                 //var crawler = new RabotaUaCrawler(logger);
-                var crawler = new PrgJobsComCrawler(logger);
+                //var crawler = new PrgJobsComCrawler(logger);
+                var crawler = new CareersStackoverfowComCrawler(logger);
 
                 crawler.Crawle(loader, repository);
             }
