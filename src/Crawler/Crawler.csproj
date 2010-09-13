@@ -65,6 +65,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Crawlers\CareersStackoverfowComCrawler.cs" />
+    <Compile Include="Core\Crawlers\CrawlerImpl.cs" />
     <Compile Include="Core\Crawlers\PrgJobsComCrawler.cs" />
     <Compile Include="Core\ICrawlerRepository.cs" />
     <Compile Include="Core\Crawlers\RabotaUaCrawler.cs" />
