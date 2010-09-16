@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
+using System.Threading;
 
 namespace Crawler.Core.Model
 {
@@ -30,6 +31,7 @@ namespace Crawler.Core.Model
             catch(Exception ) 
             {
                 //just do a second try
+                Thread.Sleep(1000);
                 using (var responseStream = CreateRequest(url).GetResponse().GetResponseStream())
                 {
                     document.Load(responseStream, Encoding.UTF8);
