@@ -10,16 +10,21 @@ namespace Crawler.Core.Matchers
         private static IList<string> _patterns = new List<string>()
             {
                 "tdd",
+                "bdd",
                 "junit",
                 "nunit",
                 "xunit",
                 "unit",
                 "test driven",
+                "test driven development",
                 "unit test",
                 "unit tests",
                 "unit testing",
                 "cppunit",
-                "development by tests",
+                "moq",
+                "mocks",
+                "mocks",
+                "development by tests"
             };
 
         

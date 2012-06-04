@@ -9,12 +9,17 @@ namespace Crawler.Core.Model
 {
     internal class CrawlerDataContext : DbContext
     {
+        public CrawlerDataContext() : base("crawlerdb")
+        {
+            
+        }
+
         public DbSet<TddDemandRecord> Records { get; set; }
     }
 
     public class CrawlerRepository : ICrawlerRepository
     {
-        private CrawlerDataContext _context = new CrawlerDataContext();
+        private readonly CrawlerDataContext _context = new CrawlerDataContext();
 
         public void Add(TddDemandRecord record)
         {
@@ -26,15 +31,9 @@ namespace Crawler.Core.Model
             _context.SaveChanges();
         }
 
-        public System.Data.Entity.Infrastructure.Database Database
+        public Database Database
         {
             get { return _context.Database; }
-        }
-
-
-        public IEnumerable<TddDemandRecord> GetByCompanyName(string companyName)
-        {
-            return _context.Records.Where(r => r.Company == companyName);
         }
 
 

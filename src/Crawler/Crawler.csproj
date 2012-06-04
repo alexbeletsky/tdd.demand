@@ -49,15 +49,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\packages\EntityFramework.5.0.0-rc\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\lib\htmlagilitypack\HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Data.Entity.CTP, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Microsoft ADO.NET Entity Framework Feature CTP4\Binaries\Microsoft.Data.Entity.CTP.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,7 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Crawlers\CareersStackoverfowComCrawler.cs" />
-    <Compile Include="Core\Crawlers\CrawlerImpl.cs" />
+    <Compile Include="Core\Crawlers\CrawlerBase.cs" />
     <Compile Include="Core\Crawlers\PrgJobsComCrawler.cs" />
     <Compile Include="Core\ICrawlerRepository.cs" />
     <Compile Include="Core\Crawlers\RabotaUaCrawler.cs" />
@@ -90,6 +91,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

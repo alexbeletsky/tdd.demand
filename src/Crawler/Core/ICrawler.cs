@@ -7,6 +7,6 @@ namespace Crawler.Core
 {
     public interface ICrawler
     {
-        void Crawle(IHtmlDocumentLoader loader, ICrawlerRepository context);
+        void Crawl(IHtmlDocumentLoader loader, ICrawlerRepository context);
     }
 }

@@ -10,11 +10,10 @@ namespace Crawler.Core.Matchers
     {
         public static bool Match(string input, IList<string> patterns)
         {
-            var lower = input.ToLower();
             foreach (var pattern in patterns)
             {
                 var start = pattern.StartsWith("\\.") ? "(?!\\w)" : "\\b";
-                if (Regex.IsMatch(lower, start + pattern + "(?!\\w)"))
+                if (Regex.IsMatch(input, start + pattern + "(?!\\w)",  RegexOptions.IgnoreCase))
                 {
                     return true;
                 }

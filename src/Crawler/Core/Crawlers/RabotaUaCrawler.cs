@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Crawler.Core.Domain;
-using System.Text.RegularExpressions;
-using Crawler.Core.Matchers;
 
 namespace Crawler.Core.Crawlers
 {
-    public class RabotaUaCrawler : CrawlerImpl, ICrawler
+    public class RabotaUaCrawler : CrawlerBase, ICrawler
     {
         private string _baseUrl = @"http://rabota.ua";
         private string _searchBaseUrl = @"http://rabota.ua/jobsearch/vacancy_list?rubricIds=8,9&keyWords=&parentId=1";
@@ -18,7 +13,7 @@ namespace Crawler.Core.Crawlers
             Logger = logger;
         }
 
-        public void Crawle(IHtmlDocumentLoader loader, ICrawlerRepository context)
+        public void Crawl(IHtmlDocumentLoader loader, ICrawlerRepository context)
         {
             Loader = loader;
             Repository = context;
@@ -38,27 +33,19 @@ namespace Crawler.Core.Crawlers
 
         protected override IEnumerable<HtmlAgilityPack.HtmlNode> GetJobRows(HtmlAgilityPack.HtmlDocument document)
         {
-            var vacancyDivs = document.DocumentNode.Descendants("div")
+            var vacancyDivs = document.DocumentNode.Descendants("tr")
                 .Where(d =>
                     d.Attributes.Contains("class") &&
-                    d.Attributes["class"].Value.Contains("vacancyitem"));
+                    d.Attributes["class"].Value.Contains("vacancy-list-item"));
             return vacancyDivs;
         }
 
         protected override string GetVacancyUrl(HtmlAgilityPack.HtmlNode div)
         {
             var vacancyHref = div.Descendants("a").Where(
-                d => d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("vacancyDescription"))
+                d => d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("vacancy-title"))
                 .Select(d => d.Attributes["href"].Value).SingleOrDefault();
             return BaseUrl + vacancyHref;
-        }
-
-        private static string GetVacancyHref(HtmlAgilityPack.HtmlNode div)
-        {
-            var vacancyHref = div.Descendants("a").Where(
-                d => d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("vacancyDescription"))
-                .Select(d => d.Attributes["href"].Value).SingleOrDefault();
-            return vacancyHref;
         }
 
         protected override string CreateNextUrl(int nextPage)
@@ -68,17 +55,11 @@ namespace Crawler.Core.Crawlers
 
         protected override string GetVacancyBody(HtmlAgilityPack.HtmlDocument vacancyPage)
         {
-            if (vacancyPage == null)
-            {
-                //TODO: log event here and skip this page
-                return null;
-            }
+            var nodes = vacancyPage.DocumentNode.Descendants("div").Where(
+                d => d.Attributes.Contains("class") && (d.Attributes["class"].Value.Equals("d_des") || d.Attributes["class"].Value.Equals("descr")));
+            var body = nodes.Aggregate("", (current, node) => current + node.InnerText);
 
-            var description = vacancyPage.DocumentNode.Descendants("div")
-                .Where(
-                    d => d.Attributes.Contains("id") && d.Attributes["id"].Value.Contains("ctl00_centerZone_vcVwPopup_pnlBody"))
-                .Select(d => d.InnerHtml).SingleOrDefault();
-            return description;
+            return body;
         }
 
 
@@ -86,15 +67,8 @@ namespace Crawler.Core.Crawlers
         {
             return div.Descendants("a").Where(
                d => d.Attributes.Contains("class") &&
-               d.Attributes["class"].Value.Contains("vacancyName") || d.Attributes["class"].Value.Contains("jqKeywordHighlight")
+               d.Attributes["class"].Value.Contains("rua-b-vacancy-title") || d.Attributes["class"].Value.Contains("jqKeywordHighlight")
                ).Select(d => d.InnerText).First();
-        }
-
-        protected override string GetCompany(HtmlAgilityPack.HtmlNode div)
-        {
-            return div.Descendants("div").Where(
-                d => d.Attributes.Contains("class") &&
-                d.Attributes["class"].Value.Contains("companyName")).Select(d => d.FirstChild.InnerText).First();
         }
     }
 }

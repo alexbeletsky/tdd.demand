@@ -18,18 +18,18 @@ namespace Crawler.Tests
     [TestFixture]
     public class CrawlerDataTests
     {
-        private static ICrawlerRepository _context = new CrawlerRepository();
+        private static readonly ICrawlerRepository _context = new CrawlerRepository();
 
         [TestFixtureSetUp]
         public static void Setup()
         {
-            _context.Database.CreateIfNotExists();
+            _context.Database.Delete();
+            _context.Database.Create();
         }
 
         [TestFixtureTearDown]
         public static void TearDown()
         {
-            _context.Database.DeleteIfExists();
         }
 
         [Test]
@@ -38,7 +38,6 @@ namespace Crawler.Tests
             //arrange
             var record = new TddDemandRecord
             {
-                Company = "xxx",
                 Demand = false,
                 Site = "http://localhost",
                 Technology = "C#"
@@ -49,7 +48,7 @@ namespace Crawler.Tests
             _context.SaveChanges();
 
             //assert
-            var found = _context.GetByCompanyName("xxx").First();
+            var found = _context.GetBySiteName("http://localhost").First();
             Assert.That(found, Is.Not.Null);
         }
     }

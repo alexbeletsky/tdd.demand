@@ -49,7 +49,7 @@ namespace Crawler.Tests.CrawlerTests
             context.Setup(c => c.Add(It.IsAny<TddDemandRecord>())).Callback((TddDemandRecord r) => storage.Add(r));
             
             //act
-            crawler.Crawle(loader.Object, context.Object);
+            crawler.Crawl(loader.Object, context.Object);
 
             //assert
             context.Verify(c => c.SaveChanges());
@@ -80,7 +80,7 @@ namespace Crawler.Tests.CrawlerTests
             context.Setup(c => c.Add(It.IsAny<TddDemandRecord>())).Callback((TddDemandRecord r) => storage.Add(r));
 
             //act
-            crawler.Crawle(loader.Object, context.Object);
+            crawler.Crawl(loader.Object, context.Object);
 
             //assert
             context.Verify(c => c.SaveChanges());
@@ -111,7 +111,7 @@ namespace Crawler.Tests.CrawlerTests
             context.Setup(c => c.Add(It.IsAny<TddDemandRecord>())).Callback((TddDemandRecord r) => storage.Add(r));
 
             //act
-            crawler.Crawle(loader.Object, context.Object);
+            crawler.Crawl(loader.Object, context.Object);
 
             //return
             return storage.First();

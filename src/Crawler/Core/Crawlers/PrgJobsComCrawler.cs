@@ -7,7 +7,7 @@ using Crawler.Core.Matchers;
 
 namespace Crawler.Core.Crawlers
 {
-    public class PrgJobsComCrawler : CrawlerImpl, ICrawler
+    public class PrgJobsComCrawler : CrawlerBase, ICrawler
     {
         private string _baseUrl = @"http://www.prgjobs.com/";
         private string _searchBaseUrl = @"http://www.prgjobs.com/jobout.cfm?ApplicantSearchArea=&SearchText=";
@@ -17,7 +17,7 @@ namespace Crawler.Core.Crawlers
             Logger = logger;
         }
         
-        public void Crawle(IHtmlDocumentLoader loader, ICrawlerRepository context)
+        public void Crawl(IHtmlDocumentLoader loader, ICrawlerRepository context)
         {
             Loader = loader;
             Repository = context;
@@ -34,11 +34,6 @@ namespace Crawler.Core.Crawlers
         protected override string GetPosition(HtmlAgilityPack.HtmlNode row)
         {
             return row.Descendants("td").ElementAt(1).Descendants("a").Single().InnerText;
-        }
-
-        protected override string GetCompany(HtmlAgilityPack.HtmlNode row)
-        {
-            return row.Descendants("td").ElementAt(2).Descendants("em").Single().InnerText;
         }
 
         protected override string GetVacancyUrl(HtmlAgilityPack.HtmlNode row)

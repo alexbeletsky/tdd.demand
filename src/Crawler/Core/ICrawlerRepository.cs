@@ -16,9 +16,8 @@ namespace Crawler.Core
         void Delete(TddDemandRecord record);
 
         IEnumerable<TddDemandRecord> GetBySiteName(string site);
-        IEnumerable<TddDemandRecord> GetByCompanyName(string companyName);
-        
-        
+
+
         void SaveChanges();
     }
 }
