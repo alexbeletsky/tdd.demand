@@ -29,7 +29,7 @@ namespace Crawler.Tests.CrawlerTests
         }
 
         [Test]
-        public void CrawleOnePage()
+        public void CrawlOnePage()
         {
             //arrange
             var loader = new Mock<IHtmlDocumentLoader>();
@@ -37,11 +37,11 @@ namespace Crawler.Tests.CrawlerTests
             var crawler = new RabotaUaCrawler(_logger);
 
             var document = new HtmlDocument();
-            document.Load(new FileStream("TestData/rabotaua/rabotaua.results.htm", FileMode.Open));
+            document.Load(new FileStream("./TestData/rabotaua/rabotaua.results.htm", FileMode.Open));
             loader.Setup(l => l.LoadDocument("http://rabota.ua/jobsearch/vacancy_list?rubricIds=8,9&keyWords=&parentId=1&pg=1")).Returns(document);
             loader.Setup(l => l.LoadDocument("http://rabota.ua/jobsearch/vacancy_list?rubricIds=8,9&keyWords=&parentId=1&pg=2")).Returns(new HtmlDocument());
             var vacancy = new HtmlDocument();
-            vacancy.Load(new FileStream("TestData/rabotaua/dnet.withtdd.htm", FileMode.Open));
+            vacancy.Load(new FileStream("./TestData/rabotaua/dnet.withtdd.htm", FileMode.Open));
             loader.Setup(l => l.LoadDocument(It.IsRegex(@"http://rabota.ua/company\d+/vacancy\d+"))).
                 Returns(vacancy);
 
@@ -84,7 +84,6 @@ namespace Crawler.Tests.CrawlerTests
 
             //assert
             context.Verify(c => c.SaveChanges());
-            loader.Verify(l => l.LoadDocument("http://rabota.ua/company1074/vacancy4516336"));
             Assert.That(storage.Count, Is.EqualTo(1), "Expected that all 1 divs processed");
         }
 
@@ -104,8 +103,8 @@ namespace Crawler.Tests.CrawlerTests
                 Returns(new HtmlDocument());
             var vacancyPage = new HtmlDocument();
             vacancyPage.Load(new FileStream(vacancy, FileMode.Open));
-            loader.Setup(l => l.LoadDocument("http://rabota.ua/company1074/vacancy4516336")).
-                Returns(vacancyPage);
+            loader.Setup(l => l.LoadDocument(It.IsRegex(@"http://rabota.ua/company\d+/vacancy\d+"))).
+                            Returns(vacancyPage);
 
             var storage = new List<TddDemandRecord>();
             context.Setup(c => c.Add(It.IsAny<TddDemandRecord>())).Callback((TddDemandRecord r) => storage.Add(r));
@@ -123,31 +122,9 @@ namespace Crawler.Tests.CrawlerTests
             //assert
             var record = ProcessPagesAndReturnFirstRecord("TestData/rabotaua/rabotaua.java.htm", "TestData/rabotaua/java.withtdd.htm");
             Assert.That(record.Site, Is.EqualTo("http://rabota.ua"));
-            Assert.That(record.Position, Is.EqualTo("Snr Java Software Engineer"));
+            Assert.That(record.Position, Is.EqualTo("Senior Java Developer"));
             Assert.That(record.Technology, Is.EqualTo("Java"));
             Assert.That(record.Demand, Is.True);
-        }
-
-        [Test]
-        public void DotNetWithTdd()
-        {
-            //assert
-            var record = ProcessPagesAndReturnFirstRecord("TestData/rabotaua/rabotaua.dnet.htm", "TestData/rabotaua/dnet.withtdd.htm");
-            Assert.That(record.Site, Is.EqualTo("http://rabota.ua"));
-            Assert.That(record.Position, Is.EqualTo(".Net developer"));
-            Assert.That(record.Technology, Is.EqualTo("DotNet"));
-            Assert.That(record.Demand, Is.True);
-        }
-
-        [Test]
-        public void CppWithTdd()
-        {
-            var record = ProcessPagesAndReturnFirstRecord("TestData/rabotaua/rabotaua.cpp.htm", "TestData/rabotaua/cpp.withtdd.htm");
-            Assert.That(record.Site, Is.EqualTo("http://rabota.ua"));
-            Assert.That(record.Position, Is.EqualTo("C++ developer"));
-            Assert.That(record.Technology, Is.EqualTo("Cpp"));
-            Assert.That(record.Demand, Is.True);
-
         }
     }
 }

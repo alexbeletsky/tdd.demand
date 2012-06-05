@@ -28,7 +28,7 @@ namespace Crawler.Tests.CrawlerTests
         }
 
         [Test]
-        public void CrawleOnePage()
+        public void CrawlOnePage()
         {
             //arrange
             var loader = new Mock<IHtmlDocumentLoader>();
@@ -41,7 +41,7 @@ namespace Crawler.Tests.CrawlerTests
             loader.Setup(l => l.LoadDocument("http://careers.stackoverflow.com/Jobs?searchTerm=.net,java,c%2B%2B&searchType=Any&location=&range=20&pg=2")).Returns(new HtmlDocument());
             var vacancy = new HtmlDocument();
             vacancy.Load(new FileStream("TestData/careers/vacancy.htm", FileMode.Open));
-            loader.Setup(l => l.LoadDocument(It.IsRegex(@"http://careers.stackoverflow.com/Jobs/(\d+)\?campaign=(\w+)"))).
+            loader.Setup(l => l.LoadDocument(It.IsRegex(@"http://careers.stackoverflow.com/jobs/(\d+)/(.*?)"))).
                 Returns(vacancy);
 
             var storage = new List<TddDemandRecord>();

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NUnit.Framework;
 using Crawler.Core;
 using Crawler.Core.Domain;
-using System.Transactions;
 using Crawler.Core.Model;
 
 namespace Crawler.Tests
@@ -15,6 +11,7 @@ namespace Crawler.Tests
     /// 
     /// Simple test cases, to check EF4 Code-first features
     /// </summary>
+    [Ignore]
     [TestFixture]
     public class CrawlerDataTests
     {
